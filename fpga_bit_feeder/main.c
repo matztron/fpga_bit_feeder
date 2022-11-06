@@ -13,24 +13,23 @@
 #include <util/delay.h>
 	
 /**
-    * Send value passed to function to PORTB
-    *
-    * Implemented in assembly
-    *
-    * @param val Value to be output to PORTB
-    */
-//extern void send_to_portb_in_asm(uint8_t val);
+* Initialize the software UART by setting the GPIO pins clock and tx to output
+* ...while also disabling interrupts
+*
+* Implemented in assembly
+*
+* @param val Value to be output to PORTB
+*/
 extern void init_uart();
 	
 /**
-    * Send value passed to function to PORTB
-    *
-    * Implemented in assembly
-    *
-    * @param val Value to be output to PORTB
-    */
-//extern void send_to_portb_in_asm(uint8_t val);
-extern void send_uart(uint8_t data);
+* Send one (1) byte via UART while simultaneously clocking the FPGA
+*
+* Implemented in assembly
+*
+* @param data 8bit value to be transmitted via UART
+*/
+extern void send_byte_via_uart(uint8_t data);
 	
 int main()
 {
@@ -39,8 +38,8 @@ int main()
 	while(1) 
 	{	
 		// Transmit my_data via UART
-		uint8_t my_data = 0x11;
-		send_uart(my_data);
+		uint8_t my_data = 0x12;
+		send_byte_via_uart(my_data);
 			
 		//Wait for some time
 		_delay_ms(1);
@@ -49,8 +48,3 @@ int main()
 	  
     return 0;
 }
-
-// Common questions
-// https://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_reg_usage
-/* Mixing assembly and C: http://ww1.microchip.com/downloads/en/appnotes/doc42055.pdf
-* https://msoe.us/taylor/tutorial/ce2810/candasm */
