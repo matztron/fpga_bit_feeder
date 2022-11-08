@@ -8,7 +8,6 @@
 
 #define __SFR_OFFSET 0          // Use 0 for the I/O register offset
 #include <avr/io.h>             // Defines I/O port aliases
-#include "uart.h"
 
 .global init_uart
 .global send_byte_via_uart
@@ -18,7 +17,7 @@
 ;********************************************************************
 ; MIGHT BE CHANGED BY USER:
 ; Number of UART stop bits to be used (either 1 or 2)
-#define stop_bits 2
+#define stop_bits 1
 ; Prescale factor
 #define fpga_clk_division_factor 25
 ; (addtionally the user might also desires to change the pins of the clock and tx pins)

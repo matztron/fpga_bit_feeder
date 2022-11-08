@@ -11,26 +11,8 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-	
-/**
-* Initialize the software UART by setting the GPIO pins clock and tx to output
-* ...while also disabling interrupts
-*
-* Implemented in assembly
-*
-* @param val Value to be output to PORTB
-*/
-extern void init_uart();
-	
-/**
-* Send one (1) byte via UART while simultaneously clocking the FPGA
-*
-* Implemented in assembly
-*
-* @param data 8bit value to be transmitted via UART
-*/
-extern void send_byte_via_uart(uint8_t data);
-	
+
+#include "uart.h"
 int main()
 {
 	init_uart();
@@ -38,7 +20,7 @@ int main()
 	while(1) 
 	{	
 		// Transmit my_data via UART
-		uint8_t my_data = 0x12;
+		uint8_t my_data = 0xAA;
 		send_byte_via_uart(my_data);
 			
 		//Wait for some time
