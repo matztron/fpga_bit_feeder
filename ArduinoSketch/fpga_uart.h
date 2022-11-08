@@ -18,7 +18,9 @@
 * @param val Value to be output to PORTB
 */
 
-extern "C" void init_uart();
+extern "C" {
+  void init_uart();
+}
 
 //extern void init_uart();
 
@@ -30,7 +32,9 @@ extern "C" void init_uart();
 * @param data 8bit value to be transmitted via UART
 */
 
-extern "C" void send_byte_via_uart(uint8_t data);
+extern "C" {
+  void send_byte_via_uart(uint8_t data);
+}
 
 //extern void send_byte_via_uart(uint8_t data);
 

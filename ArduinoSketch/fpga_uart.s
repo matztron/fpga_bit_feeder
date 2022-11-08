@@ -6,8 +6,8 @@
  *  Author: Matthias Musch
  */ 
 
-#define __SFR_OFFSET 0          // Use 0 for the I/O register offset
 #include <avr/io.h>             // Defines I/O port aliases
+#define __SFR_OFFSET 0          // Use 0 for the I/O register offset
 
 .global init_uart
 .global send_byte_via_uart
