@@ -56,6 +56,8 @@ init_uart:
 	ldi		temp,(1<<clkPin)				; load 00000010 into mask register
 	out		DDRD, temp						; set PINB2 to ouput
 
+  ret
+
 
 ; This section can be called from C:
 ; The data to send is 8bits and it will be stored in R25:R24 
