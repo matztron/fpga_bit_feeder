@@ -6,11 +6,12 @@
  *  Author: Matthias Musch
  */ 
 
-#define __SFR_OFFSET 0          // Use 0 for the I/O register offset
 #include <avr/io.h>             // Defines I/O port aliases
+#define __SFR_OFFSET 0          // Use 0 for the I/O register offset
 
 .global init_uart
 .global send_byte_via_uart
+.global clock_fpga
       
 .section .text                  ; Defines a code section
 
@@ -44,7 +45,7 @@
 
 ; Before sending a byte this section must be run to ensure that the pins are configured correctly
 init_uart:
-	cli										; Disable interrupts during timed sequence
+	;cli										; Disable interrupts during timed sequence
 
 	; Configure pin that transmits bitstream to FPGA
 	clr		temp							; clear clk register
@@ -55,6 +56,8 @@ init_uart:
 	clr		temp							; clear clk register
 	ldi		temp,(1<<clkPin)				; load 00000010 into mask register
 	out		DDRD, temp						; set PINB2 to ouput
+
+  ret
 
 
 ; This section can be called from C:
@@ -67,7 +70,7 @@ send_byte_via_uart:
 	; SEND BYTE ;
 	ldi		bitcounter, 9 + stop_bits		; load reg with num of bits to transmit
 											; ...8 data bits + 1 start bit + 1 or 2 stop bits
-	com		data							; take the one’s complement of the data to send
+	com		data							; take the oneï¿½s complement of the data to send
 	sec										; set the carry flag
 											; ... this results in the START BIT being send
 
@@ -98,3 +101,14 @@ uart_clocking:
 
 	sbi		PORTB, txPin					; This is the stop bit?
 	ret										; Return to calling C code
+
+; After programming use this routine as an endless loop to clock the FPGA
+; For now this routine will never return and run forever
+clock_fpga:
+  ldi    clk_mask, (1<<clkPin)     ; load 00100000 into mask register
+
+  eor clkR, clk_mask    ; toggle PINB0 in led register
+  out PORTD, clkR       ; write led register to PORTB
+  rjmp  clock_fpga      ; jump back to start
+
+  

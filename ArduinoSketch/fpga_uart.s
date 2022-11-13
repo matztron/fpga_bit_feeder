@@ -11,6 +11,7 @@
 
 .global init_uart
 .global send_byte_via_uart
+.global clock_fpga
       
 .section .text                  ; Defines a code section
 
@@ -56,6 +57,8 @@ init_uart:
 	ldi		temp,(1<<clkPin)				; load 00000010 into mask register
 	out		DDRD, temp						; set PINB2 to ouput
 
+  ret
+
 
 ; This section can be called from C:
 ; The data to send is 8bits and it will be stored in R25:R24 
@@ -98,4 +101,14 @@ uart_clocking:
 
 	sbi		PORTB, txPin					; This is the stop bit?
 	ret										; Return to calling C code
+
+; After programming use this routine as an endless loop to clock the FPGA
+; For now this routine will never return and run forever
+clock_fpga:
+  ldi    clk_mask, (1<<clkPin)     ; load 00100000 into mask register
+
+  eor clkR, clk_mask    ; toggle PINB0 in led register
+  out PORTD, clkR       ; write led register to PORTB
+  rjmp  clock_fpga      ; jump back to start
+
   

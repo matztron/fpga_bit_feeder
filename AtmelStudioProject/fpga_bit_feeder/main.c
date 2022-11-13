@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "uart.h"
+#include "fpga_uart.h"
 int main()
 {
 	init_uart();

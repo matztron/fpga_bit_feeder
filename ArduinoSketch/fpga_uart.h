@@ -18,11 +18,13 @@
 * @param val Value to be output to PORTB
 */
 
+#ifdef __cplusplus
 extern "C" {
   void init_uart();
 }
-
-//extern void init_uart();
+#else
+extern void init_uart();
+#endif
 
 /**
 * Send one (1) byte via UART while simultaneously clocking the FPGA
@@ -32,12 +34,26 @@ extern "C" {
 * @param data 8bit value to be transmitted via UART
 */
 
+#ifdef __cplusplus
 extern "C" {
   void send_byte_via_uart(uint8_t data);
 }
+# else
+extern void send_byte_via_uart(uint8_t data);
+#endif
 
-//extern void send_byte_via_uart(uint8_t data);
-
-
+/**
+* Just clock the FPGA with max. frequency possible by GPIO
+*
+* Implemented in assembly
+*
+*/
+#ifdef __cplusplus
+extern "C" {
+  void clock_fpga();
+}
+#else
+void clock_fpga();
+#endif
 
 #endif /* FPGA_UART_H_ */
