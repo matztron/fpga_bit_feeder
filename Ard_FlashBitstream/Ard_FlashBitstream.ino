@@ -11,7 +11,8 @@ void setup() {
   
   init_uart();
 
-  delay(100);
+  // Two second delay
+  delay(2000);
 
   // Fetch data from FLASH and program on FPGA
   for (int i = 0; i < BITSTREAM1_SIZE; i++) {
@@ -22,6 +23,9 @@ void setup() {
 
     // Program it to FPGA
     send_byte_via_uart(data);
+
+    // to slowly examine sending (purely for debugging...)
+    //delay(1000);
   }
 
   Serial.println("Done programming now only clock");

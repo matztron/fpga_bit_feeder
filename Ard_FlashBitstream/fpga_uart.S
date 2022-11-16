@@ -21,7 +21,7 @@
 #define stop_bits 1
 ; Prescale factor
 #define fpga_clk_division_factor 25
-; (addtionally the user might also desires to change the pins of the clock and tx pins)
+; (addtionally the user might also desire to change the pins of the clock and tx pins)
 ;********************************************************************
 
 ; parameter 'data' from C function call will be stored here
