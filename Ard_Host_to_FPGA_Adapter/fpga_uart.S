@@ -21,7 +21,7 @@
 #define stop_bits 1
 ; Prescale factor
 #define fpga_clk_division_factor 25
-; (addtionally the user might also desires to change the pins of the clock and tx pins)
+; (addtionally the user might also desire to change the pins of the clock and tx pins)
 ;********************************************************************
 
 ; parameter 'data' from C function call will be stored here
@@ -105,10 +105,58 @@ uart_clocking:
 ; After programming use this routine as an endless loop to clock the FPGA
 ; For now this routine will never return and run forever
 clock_fpga:
-  ldi    clk_mask, (1<<clkPin)     ; load 00100000 into mask register
+  ldi    clk_mask, (1<<clkPin)     ; make mask register ready
+clock_flpga_loop:
+  ; Loop unrolled by a factor of 16 to increase clock frequency
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
 
-  eor clkR, clk_mask    ; toggle PINB0 in led register
-  out PORTD, clkR       ; write led register to PORTB
-  rjmp  clock_fpga      ; jump back to start
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+
+  eor clkR, clk_mask    ; toggle clkPin in clk register
+  out PORTD, clkR       ; write clk register to PORTD
+  
+  
+  rjmp  clock_flpga_loop ; jump back to clock_flpga_loop
 
   
