@@ -55,7 +55,7 @@ init_uart:
 	; Configure pin that drives FPGA
 	clr		temp							; clear clk register
 	ldi		temp,(1<<clkPin)				; load 00000010 into mask register
-	out		DDRD, temp						; set PINB2 to ouput
+	out		DDRD, temp						; set PIND2 to ouput
 
   ret
 
