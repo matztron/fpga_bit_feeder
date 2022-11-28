@@ -27,8 +27,8 @@ int main(void)
 		PORTB &= 0B11011111;
 		_delay_ms(1000);*/
 		
-		uint8_t control[2] = {0xAA, 0xB0};
-		uint8_t data[2] = {0xAA, 0x01};
+		uint8_t control[2] = {0xA8, 0xB0};
+		uint8_t data[2] = {0xA5, 0x01};
 		
 		// Send stuff
 		send_bytes_via_bitbang(control[0], data[0]);
