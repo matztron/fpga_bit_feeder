@@ -1,5 +1,11 @@
 #include "fpga_uart.h"
+#include "fpga_bitbang.h"
 #include "bitstream_data.h"
+
+///////////////////////////////////////////////////////////////////////////////////
+// if this is not defined then UART is used for transmission
+#define USE_BITBANG
+///////////////////////////////////////////////////////////////////////////////////
 
 // See: https://www.arduino.cc/reference/tr/language/variables/utilities/progmem/
 
@@ -23,18 +29,28 @@ void reprogram_fpga() {
 }
 
 void program_fpga() {
-  // Fetch data from FLASH and program on FPGA
+
+#ifdef USE_BITBANG
+  // Send 0xFA and 0xB0 to symbolize start of tranmitting
+  send_bytes_via_bitbang(0x00, 0xFA);
+  send_bytes_via_bitbang(0x00, 0xB0);
+#endif
+
+// Fetch data from FLASH and program on FPGA
   for (int i = 0; i < BITSTREAM1_SIZE; i++) {
     uint8_t data = pgm_read_word_near(bitstream1 + i);
 
     // debugging
     //Serial.println(data);
+#ifdef USE_BITBANG
+    send_bytes_via_bitbang(0x00, data);
 
+#else
     // Program it to FPGA
     send_byte_via_uart(data);
-
-    // to slowly examine sending (purely for debugging...)
-    //delay(1000);
+#endif
+  // to slowly examine sending (purely for debugging...)
+  delay(1000);
   }
 }
 
@@ -44,7 +60,8 @@ void setup() {
   // debugging
   Serial.begin(9600);
   
-  init_uart();
+  //init_uart();
+  init_io_for_bitbang(); // this does basically the same as init_uart but also sets the clk and data line low initially for a deterministic start condition
 
   // Two second delay
   delay(2000);
